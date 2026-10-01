@@ -1,0 +1,15 @@
+﻿.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+results/*
+!results/.gitkeep
+
+data/raw/*
+!data/raw/.gitkeep
+
+.vscode/
+.idea/
+
+*.log

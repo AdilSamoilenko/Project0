@@ -1,0 +1,23 @@
+﻿project:
+  name: "PROJECT 0"
+  designation: "P0"
+  version: "0.1.0"
+  status: "concept"
+
+mission:
+  objective: "TBD"
+  record: "TBD"
+
+vehicle:
+  designation: "P0-X1"
+  stages: 1
+  propulsion: "TBD"
+  recovery: "TBD"
+
+simulation:
+  atmosphere: "standard"
+  monte_carlo_runs: 1000
+
+engineering:
+  units: "SI"
+  coordinate_system: "TBD"
