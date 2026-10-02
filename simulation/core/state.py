@@ -1,42 +1,51 @@
-﻿from dataclasses import dataclass
+from __future__ import annotations
+
+from dataclasses import dataclass
 import numpy as np
 
 
 @dataclass
 class VehicleState:
-    """
-    State vector for the PROJECT 0 flight dynamics simulation.
-
-    Position and velocity are expressed in an inertial Cartesian frame.
-    Orientation is represented by a quaternion.
-
-    SI units are used throughout.
-    """
-
-    position: np.ndarray
-    velocity: np.ndarray
+    time_s: float
+    position_m: np.ndarray
+    velocity_m_s: np.ndarray
     quaternion: np.ndarray
-    angular_velocity: np.ndarray
-    time: float = 0.0
+    angular_velocity_rad_s: np.ndarray
 
-    @classmethod
-    def zero(cls):
-        return cls(
-            position=np.zeros(3, dtype=float),
-            velocity=np.zeros(3, dtype=float),
-            quaternion=np.array(
-                [1.0, 0.0, 0.0, 0.0],
-                dtype=float,
-            ),
-            angular_velocity=np.zeros(3, dtype=float),
-            time=0.0,
-        )
-
-    def copy(self):
+    def copy(self) -> "VehicleState":
         return VehicleState(
-            position=self.position.copy(),
-            velocity=self.velocity.copy(),
+            time_s=float(self.time_s),
+            position_m=self.position_m.copy(),
+            velocity_m_s=self.velocity_m_s.copy(),
             quaternion=self.quaternion.copy(),
-            angular_velocity=self.angular_velocity.copy(),
-            time=self.time,
+            angular_velocity_rad_s=self.angular_velocity_rad_s.copy(),
         )
+
+    def validate(self) -> None:
+        arrays = (
+            self.position_m,
+            self.velocity_m_s,
+            self.quaternion,
+            self.angular_velocity_rad_s,
+        )
+
+        for value in arrays:
+            if not np.all(np.isfinite(value)):
+                raise ValueError("Vehicle state contains non-finite values.")
+
+        if self.position_m.shape != (3,):
+            raise ValueError("Position must contain three components.")
+
+        if self.velocity_m_s.shape != (3,):
+            raise ValueError("Velocity must contain three components.")
+
+        if self.quaternion.shape != (4,):
+            raise ValueError("Quaternion must contain four components.")
+
+        if self.angular_velocity_rad_s.shape != (3,):
+            raise ValueError("Angular velocity must contain three components.")
+
+        norm = np.linalg.norm(self.quaternion)
+
+        if norm < 1e-12:
+            raise ValueError("Quaternion magnitude is too small.")

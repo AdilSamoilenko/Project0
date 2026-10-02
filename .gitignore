@@ -13,3 +13,5 @@ data/raw/*
 .idea/
 
 *.log
+
+simulation/output/*.csv
