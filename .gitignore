@@ -15,3 +15,5 @@ data/raw/*
 *.log
 
 simulation/output/*.csv
+
+simulation/output/*.csv
